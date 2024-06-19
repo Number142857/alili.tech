@@ -153,13 +153,13 @@ chrome-devtools:// 协议地址
       <pubDate>Sun, 16 Jul 2017 00:04:05 +0000</pubDate>
       
       <guid>https://alili.tech/archive/dd233b37/</guid>
-      <description>基于 nodejs 的阿里云 API 签名生成工具
+      <description>基于nodejs的阿里云API签名生成工具
 Github AliToSign
 阿里云签名官方说明
 安装方法:
 npm install alitosign --save  使用方法:
 例子:添加域名
-const alitosign = require(&amp;quot;alitosign&amp;quot;); const querystring = require(&amp;quot;querystring&amp;quot;); const moment = require(&amp;quot;moment&amp;quot;); const http = require(&amp;quot;http&amp;quot;); //基本上调用接口都需要的公共参数 let originParams = { AccessKeyId: &amp;quot;xxxxxxx&amp;quot;, //AccessKeyId 获得方法请参照官方文档 Format: &amp;quot;JSON&amp;quot;, Version: &amp;quot;2015-01-09&amp;quot;, SignatureMethod: &amp;quot;HMAC-SHA1&amp;quot;, SignatureVersion: &amp;quot;1.0&amp;quot;, }; function AddDomain() { //复制一份公共参数 let params = Object.assign({}, originParams); //在新的对象上添加你想调用的该接口必要参数, //每个接口都不一样,具体请查阅官方文档 params.Action = &amp;quot;AddDomain&amp;quot;; params.DomainName = &amp;quot;alili.tech&amp;quot;; params.GroupId = &amp;quot;2223&amp;quot;; //添加时间戳 params.</description>
+const alitosign = require(&amp;quot;alitosign&amp;quot;); const querystring = require(&amp;quot;querystring&amp;quot;); const moment = require(&amp;quot;moment&amp;quot;); const http =require(&amp;quot;http&amp;quot;); //基本上调用接口都需要的公共参数 let originParams = { AccessKeyId: &amp;quot;xxxxxxx&amp;quot;, //AccessKeyId 获得方法请参照官方文档 Format: &amp;quot;JSON&amp;quot;, Version: &amp;quot;2015-01-09&amp;quot;, SignatureMethod: &amp;quot;HMAC-SHA1&amp;quot;, SignatureVersion: &amp;quot;1.0&amp;quot; } function AddDomain() { //复制一份公共参数 let params = Object.assign({},originParams); //在新的对象上添加你想调用的该接口必要参数, //每个接口都不一样,具体请查阅官方文档 params.Action = &amp;quot;AddDomain&amp;quot;; params.DomainName = &amp;quot;alili.tech&amp;quot;; params.GroupId = &amp;quot;2223&amp;quot;; //添加时间戳 params.Timestamp = moment.utc().format(); //要用格林威治时间; params.SignatureNonce = new Date().</description>
     </item>
     
     <item>
