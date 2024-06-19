@@ -1,5 +1,11 @@
 [
     {
+        "uri": "https://alili.tech/archive/4idr9m2kjll/",
+        "title": "Long Time No See",
+        "tags": ["English"],
+        "description": ""
+    },
+    {
         "uri": "https://alili.tech/archive/ry80uk3igi/",
         "title": "Mac 最小化所有应用快捷键",
         "tags": ["mac"],
@@ -1232,6 +1238,12 @@
     {
         "uri": "https://alili.tech/tags/electron/",
         "title": "Electron",
+        "tags": [],
+        "description": ""
+    },
+    {
+        "uri": "https://alili.tech/tags/english/",
+        "title": "English",
         "tags": [],
         "description": ""
     },
