@@ -17,8 +17,8 @@
       <pubDate>Wed, 10 Oct 2018 19:33:33 +0000</pubDate>
       
       <guid>https://alili.tech/archive/69a6fd18/</guid>
-      <description>Eggjs Eggjs 是阿里开源的企业级基于Koa2的Node.js框架. eggjs基本上是开箱即用,奉行『约定优于配置』.在日常开发中,用起来非常顺畅. 而且生态也比较完善,koa2的插件都可以对接到框架中来.
-Egg.js 目录结构 egg-project ├── package.json ├── app.js (可选) ├── agent.js (可选) ├── app | ├── router.js │ ├── controller │ | └── home.js │ ├── service (可选) │ | └── user.js │ ├── middleware (可选) │ | └── response_time.js │ ├── schedule (可选) │ | └── my_task.js │ ├── public (可选) │ | └── reset.css │ ├── view (可选) │ | └── home.tpl │ └── extend (可选) │ ├── helper.</description>
+      <description>Eggjs Eggjs 是阿里开源的企业级基于 Koa2 的 Node.js 框架. eggjs 基本上是开箱即用,奉行『约定优于配置』.在日常开发中,用起来非常顺畅. 而且生态也比较完善,koa2 的插件都可以对接到框架中来.
+Egg.js 目录结构 egg-project ├── package.json ├── app.js (可选) ├── agent.js (可选) ├── app | ├── router.js │ ├── controller │ | └── home.js │ ├── service (可选) │ | └── user.js │ ├── middleware (可选) │ | └── response_time.js │ ├── schedule (可选) │ | └── my_task.js │ ├── public (可选) │ | └── reset.css │ ├── view (可选) │ | └── home.</description>
     </item>
     
     <item>

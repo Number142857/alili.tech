@@ -1,38 +1,37 @@
 <!DOCTYPE html><html lang="zh"><head><meta name="generator" content="Hugo 0.51"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="HandheldFriendly" content="True"><meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no"><meta name="wap-font-scale" content="no"><meta name="360-site-verification" content="0903ba33c82867d1f7bd8831e32a7e34"><meta name="sogou_site_verification" content="E8uWFBcf4a"><meta name="author" content="Fan"><meta name="description" itemprop="description" content="微前端的消息总线,主要的功能是搭建模块与模块之间通讯的桥梁.
- 黑盒子 问题1: 应用微服务化之后,每一个单独的模块都是一个黑盒子, 里面发生了什么,状态改变了什么,外面的模块是无从得知的. 比如模块A想要根据模块B的某一个内部状态进行下一步行为的时候,黑盒子之间没有办法通信.这是一个大麻烦.
-问题2 每一个模块之间都是有生命周期的.当模块被卸载的时候,如何才能保持后续的正常的通信?
- ps. 我"><meta name="keywords" content="微前端,前端微服务化,前端自动化,解决方案,前端难题,Single,SPA"><meta property="og:locale" content="en_US"><meta property="og:title" content="前端微服务化解决方案4 - 消息总线"><meta property="og:image" content="https://alili.tech/images/logo.png"><meta property="og:description" content="微前端的消息总线,主要的功能是搭建模块与模块之间通讯的桥梁.
- 黑盒子 问题1: 应用微服务化之后,每一个单独的模块都是一个黑盒子, 里面发生了什么,状态改变了什么,外面的模块是无从得知的. 比如模块A想要根据模块B的某一个内部状态进行下一步行为的时候,黑盒子之间没有办法通信.这是一个大麻烦.
-问题2 每一个模块之间都是有生命周期的.当模块被卸载的时候,如何才能保持后续的正常的通信?
- ps. 我"><meta property="og:site_name" content="Hello Alili"><title>前端微服务化解决方案4 - 消息总线 | 前端大爆炸! - WEB BANG! BANG!! BANG!!!</title><link rel="shortcut icon" href="https://alili.tech/images/favicon.ico"><link rel="manifest" href="/manifest.json"><link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"><link href="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.6.1/css/justifiedGallery.min.css" rel="stylesheet"><link rel="preload" href="/css/style.css" as="style"><link rel="stylesheet" href="/css/style.css"><script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.1.3/jquery.min.js"></script><script>document.addEventListener("error", function (e) {
+ 黑盒子 问题 1: 应用微服务化之后,每一个单独的模块都是一个黑盒子, 里面发生了什么,状态改变了什么,外面的模块是无从得知的. 比如模块A想要根据模块B的某一个内部状态进行下一步行为的时候,黑盒子之间没有办法通信.这是一个大麻烦.
+问题 2 每一个模块之间都是有生命周期的.当模块被卸载的时候,如何才能保持后续的正常的通信?
+ ps."><meta name="keywords" content="微前端,前端微服务化,前端自动化,解决方案,前端难题,Single,SPA"><meta property="og:locale" content="en_US"><meta property="og:title" content="前端微服务化解决方案4 - 消息总线"><meta property="og:image" content="https://alili.tech/images/logo.png"><meta property="og:description" content="微前端的消息总线,主要的功能是搭建模块与模块之间通讯的桥梁.
+ 黑盒子 问题 1: 应用微服务化之后,每一个单独的模块都是一个黑盒子, 里面发生了什么,状态改变了什么,外面的模块是无从得知的. 比如模块A想要根据模块B的某一个内部状态进行下一步行为的时候,黑盒子之间没有办法通信.这是一个大麻烦.
+问题 2 每一个模块之间都是有生命周期的.当模块被卸载的时候,如何才能保持后续的正常的通信?
+ ps."><meta property="og:site_name" content="Hello Alili"><title>前端微服务化解决方案4 - 消息总线 | 前端大爆炸! - WEB BANG! BANG!! BANG!!!</title><link rel="shortcut icon" href="https://alili.tech/images/favicon.ico"><link rel="manifest" href="/manifest.json"><link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"><link href="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.6.1/css/justifiedGallery.min.css" rel="stylesheet"><link rel="preload" href="/css/style.css" as="style"><link rel="stylesheet" href="/css/style.css"><script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.1.3/jquery.min.js"></script><script>document.addEventListener("error", function (e) {
 			var elem = e.target;
 			if (elem.tagName.toLowerCase() == 'img') {
 				elem.style.display = 'none'
 			}
-		}, true);</script></head><body><div id="header-post"><a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a> <span id="menu"><span id="nav"><ul><li><a href="/">Home</a></li><li><a href="/archive/">Archives</a></li><li><a href="/about/">About</a></li><li><a href="http://github.com/Fantasy9527" target="_blank">Github</a></li></ul></span><br><span id="actions"><ul><li><a class="icon" href="https://alili.tech/archive/1a60cede/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover='$("#i-prev").toggle();' onmouseout='$("#i-prev").toggle();'></i></a></li><li><a class="icon" href="https://alili.tech/archive/5ff0b366/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover='$("#i-next").toggle();' onmouseout='$("#i-next").toggle();'></i></a></li><li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover='$("#i-top").toggle();' onmouseout='$("#i-top").toggle();'></i></a></li><li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover='$("#i-share").toggle();' onmouseout='$("#i-share").toggle();' onclick='$("#share").toggle();return false;'></i></a></li></ul><span id="i-prev" class="info" style="display:none;">Previous post</span> <span id="i-next" class="info" style="display:none;">Next post</span> <span id="i-top" class="info" style="display:none;">Back to top</span> <span id="i-share" class="info" style="display:none;">Share post</span></span><br><div id="share" style="display: none"><ul><li><a class="icon" href="http://v.t.sina.com.cn/share/share.php?u=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&text=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-weibo" aria-hidden="true"></i></a></li><li><a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f"><i class="fa fa-facebook" aria-hidden="true"></i></a></li><li><a class="icon" href="https://twitter.com/share?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&text=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-twitter" aria-hidden="true"></i></a></li><li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&title=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li><li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&is_video=false&description=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li><li><a class="icon" href="mailto:?subject=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf&body=Check out this article: https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f"><i class="fa fa-envelope" aria-hidden="true"></i></a></li><li><a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&title=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-get-pocket" aria-hidden="true"></i></a></li><li><a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&title=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-reddit" aria-hidden="true"></i></a></li><li><a class="icon" href="http://www.stumbleupon.com/submit?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&title=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-stumbleupon" aria-hidden="true"></i></a></li><li><a class="icon" href="http://digg.com/submit?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&title=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-digg" aria-hidden="true"></i></a></li></ul></div><div id="toc"><nav id="TableOfContents"><ul><li><a href="#黑盒子">黑盒子</a><ul><li><a href="#问题1">问题1:</a></li><li><a href="#问题2">问题2</a></li></ul></li><li><a href="#打破壁垒">打破壁垒</a></li><li><a href="#store-js-如何被使用">Store.js 如何被使用?</a></li><li><a href="#全局派发器-globaleventdistributor">全局派发器 GlobalEventDistributor</a></li><li><a href="#在模块中接收派发器以及自己的store">在模块中接收派发器以及自己的Store</a></li><li><a href="#相关文章">相关文章</a></li><li><a href="#demo">Demo</a></li></ul></nav></div></span></div><div class="content index width mx-auto px3 my3"><section id="wrapper" class="home"><article class="post" itemscope itemtype="http://schema.org/BlogPosting"><header><h1 class="posttitle" itemprop="name headline">前端微服务化解决方案4 - 消息总线</h1><div class="meta"><div class="postdate"><time datetime="2018-09-03" itemprop="datePublished">2018-09-03</time></div><div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span></span></div><div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/%E5%BE%AE%E5%89%8D%E7%AB%AF">微前端</a> <a href="/tags/microfrontend">MicroFrontend</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84">前端架构</a></div><div class="article-tag-box"></div></div></header><div class="content" itemprop="articleBody"><blockquote><p>微前端的消息总线,主要的功能是搭建模块与模块之间通讯的桥梁.</p></blockquote><h1 id="黑盒子">黑盒子</h1><h2 id="问题1">问题1:</h2><p>应用微服务化之后,每一个单独的模块都是一个黑盒子, 里面发生了什么,状态改变了什么,外面的模块是无从得知的. 比如<code>模块A</code>想要根据<code>模块B</code>的某一个内部状态进行下一步行为的时候,黑盒子之间没有办法通信.这是一个大麻烦.</p><h2 id="问题2">问题2</h2><p>每一个模块之间都是有生命周期的.当模块被卸载的时候,如何才能保持后续的正常的通信?</p><blockquote><p>ps. 我们必须要解决这些问题,模块与模块之间的通讯太有必要了.</p></blockquote><h1 id="打破壁垒">打破壁垒</h1><p>在github上<a href="https://github.com/me-12/single-spa-portal-example">single-spa-portal-example</a>,给出来一解决方案.</p><p>基于Redux实现前端微服务的消息总线(不会影响在编写代码的时候使用其他的状态管理工具).</p><p>大概思路是这样的: <img src="https://github.com/me-12/single-spa-portal-example/raw/master/docs/inter-app-communication.jpg" alt=""></p><p>每一个模块,会对外提供一个 Store.js.</p><p>这个文件里面的内容,大致是这样的.</p><pre><code class="language-js">import { createStore, combineReducers } from 'redux'
+		}, true);</script></head><body><div id="header-post"><a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a> <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a> <span id="menu"><span id="nav"><ul><li><a href="/">Home</a></li><li><a href="/archive/">Archives</a></li><li><a href="/about/">About</a></li><li><a href="http://github.com/Num142857" target="_blank">Github</a></li></ul></span><br><span id="actions"><ul><li><a class="icon" href="https://alili.tech/archive/1a60cede/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover='$("#i-prev").toggle();' onmouseout='$("#i-prev").toggle();'></i></a></li><li><a class="icon" href="https://alili.tech/archive/5ff0b366/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover='$("#i-next").toggle();' onmouseout='$("#i-next").toggle();'></i></a></li><li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover='$("#i-top").toggle();' onmouseout='$("#i-top").toggle();'></i></a></li><li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover='$("#i-share").toggle();' onmouseout='$("#i-share").toggle();' onclick='$("#share").toggle();return false;'></i></a></li></ul><span id="i-prev" class="info" style="display:none;">Previous post</span> <span id="i-next" class="info" style="display:none;">Next post</span> <span id="i-top" class="info" style="display:none;">Back to top</span> <span id="i-share" class="info" style="display:none;">Share post</span></span><br><div id="share" style="display: none"><ul><li><a class="icon" href="http://v.t.sina.com.cn/share/share.php?u=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&text=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-weibo" aria-hidden="true"></i></a></li><li><a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f"><i class="fa fa-facebook" aria-hidden="true"></i></a></li><li><a class="icon" href="https://twitter.com/share?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&text=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-twitter" aria-hidden="true"></i></a></li><li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&title=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li><li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&is_video=false&description=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li><li><a class="icon" href="mailto:?subject=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf&body=Check out this article: https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f"><i class="fa fa-envelope" aria-hidden="true"></i></a></li><li><a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&title=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-get-pocket" aria-hidden="true"></i></a></li><li><a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&title=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-reddit" aria-hidden="true"></i></a></li><li><a class="icon" href="http://www.stumbleupon.com/submit?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&title=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-stumbleupon" aria-hidden="true"></i></a></li><li><a class="icon" href="http://digg.com/submit?url=https%3a%2f%2falili.tech%2farchive%2fa9a1f81b%2f&title=%e5%89%8d%e7%ab%af%e5%be%ae%e6%9c%8d%e5%8a%a1%e5%8c%96%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%884%20-%20%e6%b6%88%e6%81%af%e6%80%bb%e7%ba%bf"><i class="fa fa-digg" aria-hidden="true"></i></a></li></ul></div><div id="toc"><nav id="TableOfContents"><ul><li><a href="#黑盒子">黑盒子</a><ul><li><a href="#问题-1">问题 1:</a></li><li><a href="#问题-2">问题 2</a></li></ul></li><li><a href="#打破壁垒">打破壁垒</a></li><li><a href="#store-js-如何被使用">Store.js 如何被使用?</a></li><li><a href="#全局派发器-globaleventdistributor">全局派发器 GlobalEventDistributor</a></li><li><a href="#在模块中接收派发器以及自己的-store">在模块中接收派发器以及自己的 Store</a></li><li><a href="#相关文章">相关文章</a></li><li><a href="#demo">Demo</a></li></ul></nav></div></span></div><div class="content index width mx-auto px3 my3"><section id="wrapper" class="home"><article class="post" itemscope itemtype="http://schema.org/BlogPosting"><header><h1 class="posttitle" itemprop="name headline">前端微服务化解决方案4 - 消息总线</h1><div class="meta"><div class="postdate"><time datetime="2018-09-03" itemprop="datePublished">2018-09-03</time></div><div class="article-tag"><i class="fa fa-eye"></i> <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span></span></div><div class="article-tag"><i class="fa fa-tag"></i> <a href="/tags/%E5%BE%AE%E5%89%8D%E7%AB%AF">微前端</a> <a href="/tags/microfrontend">MicroFrontend</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84">前端架构</a></div><div class="article-tag-box"></div></div></header><div class="content" itemprop="articleBody"><blockquote><p>微前端的消息总线,主要的功能是搭建模块与模块之间通讯的桥梁.</p></blockquote><h1 id="黑盒子">黑盒子</h1><h2 id="问题-1">问题 1:</h2><p>应用微服务化之后,每一个单独的模块都是一个黑盒子, 里面发生了什么,状态改变了什么,外面的模块是无从得知的. 比如<code>模块A</code>想要根据<code>模块B</code>的某一个内部状态进行下一步行为的时候,黑盒子之间没有办法通信.这是一个大麻烦.</p><h2 id="问题-2">问题 2</h2><p>每一个模块之间都是有生命周期的.当模块被卸载的时候,如何才能保持后续的正常的通信?</p><blockquote><p>ps. 我们必须要解决这些问题,模块与模块之间的通讯太有必要了.</p></blockquote><h1 id="打破壁垒">打破壁垒</h1><p>在 github 上<a href="https://github.com/me-12/single-spa-portal-example">single-spa-portal-example</a>,给出来一解决方案.</p><p>基于 Redux 实现前端微服务的消息总线(不会影响在编写代码的时候使用其他的状态管理工具).</p><p>大概思路是这样的: <img src="https://github.com/me-12/single-spa-portal-example/raw/master/docs/inter-app-communication.jpg" alt=""></p><p>每一个模块,会对外提供一个 Store.js.</p><p>这个文件里面的内容,大致是这样的.</p><pre><code class="language-js">import { createStore, combineReducers } from &quot;redux&quot;;
 
 const initialState = {
-  refresh: 0
-}
+  refresh: 0,
+};
 
 function render(state = initialState, action) {
   switch (action.type) {
-    case 'REFRESH':
-      return { ...state,
-        refresh: state.refresh + 1
-      }
+    case &quot;REFRESH&quot;:
+      return { ...state, refresh: state.refresh + 1 };
     default:
-      return state
+      return state;
   }
 }
 
 // 向外输出 Store
-export const storeInstance = createStore(combineReducers({ namespace: () =&gt; 'base', render }))
-
-</code></pre><p>对于这样的代码,有没有很熟悉? 对,他就是一个普通的Store文件, 每一个模块对外输出的<code>Store.js</code>,就是一个模块的Store.</p><h1 id="store-js-如何被使用">Store.js 如何被使用?</h1><p>我们需要在模块加载器中,导出这个Store.js</p><p>于是我们对模块加载器中的<code>Register.js</code>文件 (该文件在上一章出现过,不懂的同学可以往回看)</p><p>进行了以下改造:</p><pre><code class="language-js">import * as singleSpa from 'single-spa';
+export const storeInstance = createStore(
+  combineReducers({ namespace: () =&gt; &quot;base&quot;, render })
+);
+</code></pre><p>对于这样的代码,有没有很熟悉? 对,他就是一个普通的 Store 文件, 每一个模块对外输出的<code>Store.js</code>,就是一个模块的 Store.</p><h1 id="store-js-如何被使用">Store.js 如何被使用?</h1><p>我们需要在模块加载器中,导出这个 Store.js</p><p>于是我们对模块加载器中的<code>Register.js</code>文件 (该文件在上一章出现过,不懂的同学可以往回看)</p><p>进行了以下改造:</p><pre><code class="language-js">import * as singleSpa from 'single-spa';
 
 //全局的事件派发器 (新增)
-import { GlobalEventDistributor } from './GlobalEventDistributor' 
+import { GlobalEventDistributor } from './GlobalEventDistributor'
 const globalEventDistributor = new GlobalEventDistributor();
 
 
@@ -76,45 +75,42 @@ export async function registerApp(params) {
     singleSpa.registerApplication(params.name, () =&gt; SystemJS.import(params.main), params.base ? (() =&gt; true) : pathPrefix(params), customProps);
 }
 
-</code></pre><h1 id="全局派发器-globaleventdistributor">全局派发器 GlobalEventDistributor</h1><p>全局派发器,主要的职责是触发各个模块对外的API.</p><p>GlobalEventDistributor.js</p><pre><code class="language-js">export class GlobalEventDistributor {
+</code></pre><h1 id="全局派发器-globaleventdistributor">全局派发器 GlobalEventDistributor</h1><p>全局派发器,主要的职责是触发各个模块对外的 API.</p><p>GlobalEventDistributor.js</p><pre><code class="language-js">export class GlobalEventDistributor {
+  constructor() {
+    // 在函数实例化的时候,初始一个数组,保存所有模块的对外api
+    this.stores = [];
+  }
 
-    constructor() {
-        // 在函数实例化的时候,初始一个数组,保存所有模块的对外api
-        this.stores = [];
-    }
+  // 注册
+  registerStore(store) {
+    this.stores.push(store);
+  }
 
-    // 注册
-    registerStore(store) {
-        this.stores.push(store);
-    }
+  // 触发,这个函数会被种到每一个模块当中.便于每一个模块可以调用其他模块的 api
+  // 大致是每个模块都问一遍,是否有对应的事件触发.如果每个模块都有,都会被触发.
+  dispatch(event) {
+    this.stores.forEach((s) =&gt; {
+      s.dispatch(event);
+    });
+  }
 
-    // 触发,这个函数会被种到每一个模块当中.便于每一个模块可以调用其他模块的 api
-    // 大致是每个模块都问一遍,是否有对应的事件触发.如果每个模块都有,都会被触发.
-    dispatch(event) {
-        this.stores.forEach((s) =&gt; {
-            s.dispatch(event)
-        });
-    }
-
-    // 获取所有模块当前的对外状态
-    getState() {
-        let state = {};
-        this.stores.forEach((s) =&gt; {
-            let currentState = s.getState();
-            console.log(currentState)
-            state[currentState.namespace] = currentState
-        });
-        return state
-    }
+  // 获取所有模块当前的对外状态
+  getState() {
+    let state = {};
+    this.stores.forEach((s) =&gt; {
+      let currentState = s.getState();
+      console.log(currentState);
+      state[currentState.namespace] = currentState;
+    });
+    return state;
+  }
 }
-
-</code></pre><h1 id="在模块中接收派发器以及自己的store">在模块中接收派发器以及自己的Store</h1><p>上面提到,我们在应用注册的时候,传入了一个 <code>customProps</code>,里面包含了派发器以及store. 在每一个单独的模块中,我们如何接收并且使用传入的这些东西呢?</p><pre><code class="language-js">import React from 'react'
-import ReactDOM from 'react-dom'
-import singleSpaReact from 'single-spa-react'
-import RootComponent from './root.component'
-import { storeInstance, history } from './Store'
-import './index.less'
-
+</code></pre><h1 id="在模块中接收派发器以及自己的-store">在模块中接收派发器以及自己的 Store</h1><p>上面提到,我们在应用注册的时候,传入了一个 <code>customProps</code>,里面包含了派发器以及 store. 在每一个单独的模块中,我们如何接收并且使用传入的这些东西呢?</p><pre><code class="language-js">import React from &quot;react&quot;;
+import ReactDOM from &quot;react-dom&quot;;
+import singleSpaReact from &quot;single-spa-react&quot;;
+import RootComponent from &quot;./root.component&quot;;
+import { storeInstance, history } from &quot;./Store&quot;;
+import &quot;./index.less&quot;;
 
 const reactLifecycles = singleSpaReact({
   React,
@@ -122,23 +118,22 @@ const reactLifecycles = singleSpaReact({
   rootComponent: (spa) =&gt; {
     // 我们在创建生命周期的时候,把消息总线传入的东西,以props的形式传入组件当中
     // 这样,在每个模块中就可以直接调用跟查询其他模块的api与状态了
-    return &lt;RootComponent  store={spa.customProps.store.storeInstance} globalEventDistributor={spa.customProps.globalEventDistributor} /&gt;
+    return (
+      &lt;RootComponent
+        store={spa.customProps.store.storeInstance}
+        globalEventDistributor={spa.customProps.globalEventDistributor}
+      /&gt;
+    );
   },
-  domElementGetter: () =&gt; document.getElementById('root')
-})
+  domElementGetter: () =&gt; document.getElementById(&quot;root&quot;),
+});
 
-export const bootstrap = [
-  reactLifecycles.bootstrap,
-]
+export const bootstrap = [reactLifecycles.bootstrap];
 
-export const mount = [
-  reactLifecycles.mount,
-]
+export const mount = [reactLifecycles.mount];
 
-export const unmount = [
-  reactLifecycles.unmount,
-]
-</code></pre><blockquote><p>未完待续 &hellip;</p></blockquote><h1 id="相关文章">相关文章</h1><p><a href="http://alili.tech/archive/ea599f7c/">前端微服务化解决方案1 - 思考</a></p><p><a href="http://alili.tech/archive/11052bf4/">前端微服务化解决方案2 - Single-SPA</a></p><p><a href="http://alili.tech/archive/1a60cede/">前端微服务化解决方案3 - 模块加载器</a></p><p><a href="http://alili.tech/archive/a9a1f81b/">前端微服务化解决方案4 - 消息总线</a></p><p><a href="http://alili.tech/archive/5ff0b366/">前端微服务化解决方案5 - 路由分发</a></p><p><a href="http://alili.tech/archive/ffb0c5ab/">前端微服务化解决方案6 - 构建与部署</a></p><p><a href="http://alili.tech/archive/5e00e43d/">前端微服务化解决方案7 - 静态数据共享</a></p><p><a href="http://alili.tech/archive/ce685b9f/">前端微服务化解决方案8 - 二次构建</a></p><h1 id="demo">Demo</h1><p><a href="http://microfrontend.alili.tech/">前端微服务化 Micro Frontend Demo</a></p><p><a href="https://github.com/Fantasy9527/lotus-scaffold-micro-frontend-portal">微前端模块加载器</a></p><p><a href="https://github.com/Fantasy9527/microfrontend-base-demo">微前端Base App示例源码</a></p><p><a href="https://github.com/Fantasy9527/microfrontend-submodule-demo">微前端子项目示例源码</a></p><h2>微信公众号</h2><img src="https://incomparable9527.coding.net/p/imageBed/d/imageBed/git/raw/master/c2a91cfb597826a4b02b755746c300e00cc7728a9f5bac20bec538e8c76a443f.png"><h2>本文链接：</h2><a href="https://alili.tech/archive/a9a1f81b/" target="_blank">https://alili.tech/archive/a9a1f81b/</a></div></article><script src="https://cdn.bootcdn.net/ajax/libs/valine/1.4.14/Valine.min.js"></script><div class="blog-post-comments"></div><script>new Valine({
+export const unmount = [reactLifecycles.unmount];
+</code></pre><blockquote><p>未完待续 &hellip;</p></blockquote><h1 id="相关文章">相关文章</h1><p><a href="http://alili.tech/archive/ea599f7c/">前端微服务化解决方案 1 - 思考</a></p><p><a href="http://alili.tech/archive/11052bf4/">前端微服务化解决方案 2 - Single-SPA</a></p><p><a href="http://alili.tech/archive/1a60cede/">前端微服务化解决方案 3 - 模块加载器</a></p><p><a href="http://alili.tech/archive/a9a1f81b/">前端微服务化解决方案 4 - 消息总线</a></p><p><a href="http://alili.tech/archive/5ff0b366/">前端微服务化解决方案 5 - 路由分发</a></p><p><a href="http://alili.tech/archive/ffb0c5ab/">前端微服务化解决方案 6 - 构建与部署</a></p><p><a href="http://alili.tech/archive/5e00e43d/">前端微服务化解决方案 7 - 静态数据共享</a></p><p><a href="http://alili.tech/archive/ce685b9f/">前端微服务化解决方案 8 - 二次构建</a></p><h1 id="demo">Demo</h1><p><a href="http://microfrontend.alili.tech/">前端微服务化 Micro Frontend Demo</a></p><p><a href="https://github.com/Num142857/lotus-scaffold-micro-frontend-portal">微前端模块加载器</a></p><p><a href="https://github.com/Num142857/microfrontend-base-demo">微前端 Base App 示例源码</a></p><p><a href="https://github.com/Num142857/microfrontend-submodule-demo">微前端子项目示例源码</a></p><h2>微信公众号</h2><img src="https://incomparable9527.coding.net/p/imageBed/d/imageBed/git/raw/master/c2a91cfb597826a4b02b755746c300e00cc7728a9f5bac20bec538e8c76a443f.png"><h2>本文链接：</h2><a href="https://alili.tech/archive/a9a1f81b/" target="_blank">https://alili.tech/archive/a9a1f81b/</a></div></article><script src="https://cdn.bootcdn.net/ajax/libs/valine/1.4.14/Valine.min.js"></script><div class="blog-post-comments"></div><script>new Valine({
         el: '.blog-post-comments', 
         app_id: 'ItyOVb4I33bTwprf3cY6uqMc-gzGzoHsz', 
         app_key: 'hLhtmd4tT0qJbyO2SgQ8odya', 
@@ -146,7 +141,7 @@ export const unmount = [
         avatar:'robohash',
         notify:true,
         verify:true
-    });</script><h1># 最新文章</h1><ul id="more-post-list" class="archive readmore"><li><a href="/archive/ry80uk3igi/">Mac 最小化所有应用快捷键<aside class="dates">2021-03-31</aside></a></li><li><a href="/archive/pmzpd2410y/">2020年终有感<aside class="dates">2021-03-04</aside></a></li><li><a href="/archive/hm5dl5tsw3k/">使用Taro开发各端的顺序建议<aside class="dates">2020-12-16</aside></a></li><li><a href="/archive/n1j1l1fvzbb/">使用Taro开发的快应用如何优化体积<aside class="dates">2020-12-15</aside></a></li><li><a href="/archive/eujpibnlnp8/">TensorFlow中的Tensor是什么?<aside class="dates">2020-09-18</aside></a></li><li><a href="/archive/xewn7qbng4a/">Mac系统开启Chrome 跟 Edge的网页强制暗黑模式<aside class="dates">2020-09-17</aside></a></li><li><a href="/archive/leqgfwbuko/">Mac系统如何关掉Chrome的跨域限制<aside class="dates">2020-09-16</aside></a></li><li><a href="/archive/97enyq3a3m/">数学篇 - 数据结构丶编程语句丶基础算法与数学的关系(笔记)<aside class="dates">2020-09-15</aside></a></li><li><a href="/archive/6iwpimvelxh/">数学篇 - 朴素贝叶斯(Naive Bayes)分类算法(笔记)<aside class="dates">2020-09-14</aside></a></li><li><a href="/archive/haz1cu03hf/">数学篇 - 概率之联合概率、条件概率、边缘概率和贝叶斯法则(笔记)<aside class="dates">2020-09-13</aside></a></li></ul></section></div><footer id="footer"><div class="footer-left">Copyright © 2024 Fan <a href="https://beian.miit.gov.cn" rel="external nofollow noopener noreferrer" target="_blank">浙ICP备18045521号</a></div><div class="footer-right"><nav><ul><li><a href="/">Home</a></li><li><a href="/archive/">Archives</a></li><li><a href="/about/">About</a></li><li><a href="http://github.com/Fantasy9527" target="_blank">Github</a></li></ul></nav></div></footer><script src="https://alili.tech/lib/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script src="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.6.1/js/jquery.justifiedGallery.min.js"></script><script src="https://alili.tech/js/main.js"></script><script>(function(){
+    });</script><h1># 最新文章</h1><ul id="more-post-list" class="archive readmore"><li><a href="/archive/ry80uk3igi/">Mac 最小化所有应用快捷键<aside class="dates">2021-03-31</aside></a></li><li><a href="/archive/pmzpd2410y/">2020年终有感<aside class="dates">2021-03-04</aside></a></li><li><a href="/archive/hm5dl5tsw3k/">使用Taro开发各端的顺序建议<aside class="dates">2020-12-16</aside></a></li><li><a href="/archive/n1j1l1fvzbb/">使用Taro开发的快应用如何优化体积<aside class="dates">2020-12-15</aside></a></li><li><a href="/archive/eujpibnlnp8/">TensorFlow中的Tensor是什么?<aside class="dates">2020-09-18</aside></a></li><li><a href="/archive/xewn7qbng4a/">Mac系统开启Chrome 跟 Edge的网页强制暗黑模式<aside class="dates">2020-09-17</aside></a></li><li><a href="/archive/leqgfwbuko/">Mac系统如何关掉Chrome的跨域限制<aside class="dates">2020-09-16</aside></a></li><li><a href="/archive/97enyq3a3m/">数学篇 - 数据结构丶编程语句丶基础算法与数学的关系(笔记)<aside class="dates">2020-09-15</aside></a></li><li><a href="/archive/6iwpimvelxh/">数学篇 - 朴素贝叶斯(Naive Bayes)分类算法(笔记)<aside class="dates">2020-09-14</aside></a></li><li><a href="/archive/haz1cu03hf/">数学篇 - 概率之联合概率、条件概率、边缘概率和贝叶斯法则(笔记)<aside class="dates">2020-09-13</aside></a></li></ul></section></div><footer id="footer"><div class="footer-left">Copyright © 2024 Fan <a href="https://beian.miit.gov.cn" rel="external nofollow noopener noreferrer" target="_blank">浙ICP备18045521号</a></div><div class="footer-right"><nav><ul><li><a href="/">Home</a></li><li><a href="/archive/">Archives</a></li><li><a href="/about/">About</a></li><li><a href="http://github.com/Num142857" target="_blank">Github</a></li></ul></nav></div></footer><script src="https://alili.tech/lib/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script src="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.6.1/js/jquery.justifiedGallery.min.js"></script><script src="https://alili.tech/js/main.js"></script><script>(function(){
   if(location.host!=='alili.tech')return;
   var ga = document.createElement('script');
   var curProtocol = window.location.protocol.split(':')[0];
